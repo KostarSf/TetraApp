@@ -1,0 +1,16 @@
+.addTaskBtn {
+    margin-top: 75px;
+    align-self: flex-start !important;
+    padding: 40px;
+    background: transparent;
+    border: none;
+    display: block;
+    align-self: center;
+    transition: all 0.2s ease;
+    justify-self: center;
+}
+
+.addTaskBtn:hover {
+    transform: scale(1.2);
+    transition: all 0.2s ease;
+}

@@ -1,5 +1,7 @@
 import Card from "./Card";
 import CardList from "./CardList";
+import './dashboard.css';
+import addTaskImg from './addTask.svg';
 
 const Dashboard = () => {
   return (
@@ -20,31 +22,36 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <div className="d-flex flex-wrap gap-3">
-        <CardList title="Новые задачи" color="#57BBF3">
-          <Card
-            title="Card title"
-            description="Some quick example text to build on the card title and make up the bulk of the card's content."
-            isNew={true}
-            date="2 дня"
-            onClick={() => {}}
-          />
-        </CardList>
-        <CardList title="В работе" color="#DF0303">
-          <Card
-            title="Card title"
-            description="Some quick example text to build on the card title and make up the bulk of the card's content."
-            isNew={false}
-            date="2 дня"
-            onClick={() => { }}
-          />
-        </CardList>
-        <CardList title="Сбор обратной связи" color="#F2C85F">
+      <div className="d-flex">
+        <div className="d-flex flex-wrap gap-3">
+          <CardList title="Новые задачи" color="#57BBF3">
+            <Card
+              title="Card title"
+              description="Some quick example text to build on the card title and make up the bulk of the card's content."
+              isNew={true}
+              date="2 дня"
+              onClick={() => { }}
+            />
+          </CardList>
+          <CardList title="В работе" color="#DF0303">
+            <Card
+              title="Card title"
+              description="Some quick example text to build on the card title and make up the bulk of the card's content."
+              isNew={false}
+              date="2 дня"
+              onClick={() => { }}
+            />
+          </CardList>
+          <CardList title="Сбор обратной связи" color="#F2C85F">
 
-        </CardList>
-        <CardList title="Выполнено" color="#4DCDAE">
+          </CardList>
+          <CardList title="Выполнено" color="#4DCDAE">
 
-        </CardList>
+          </CardList>
+        </div>
+        <button className="addTaskBtn">
+          <img src={addTaskImg} alt="" />
+        </button>
       </div>
     </div>
   );

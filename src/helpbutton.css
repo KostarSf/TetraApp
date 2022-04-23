@@ -1,0 +1,41 @@
+.helpbtn__wrapper {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    margin: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    transition: all 0.2s ease;
+
+    padding-top: 10px;
+}
+
+.helpbtn__wrapper .helpbtn img {
+    transition: all 0.2s ease;
+}
+
+.helpbtn__wrapper:hover .helpbtn img {
+    transform: scale(1.2);
+
+}
+
+.helpbtn__content {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.helpbtn__wrapper:hover .helpbtn__content {
+    display: flex;
+}
+
+.helpbtn {
+
+    border: none;
+    background: transparent;
+
+}

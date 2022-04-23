@@ -16,19 +16,3 @@
     bottom: 0;
     overflow-y: scroll;
 }
-
-.helpbtn {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-
-    margin: 1rem;
-
-    border: none;
-    background: transparent;
-}
-
-.helpbtn:hover img {
-    transform: scale(1.2);
-    transition: all 0.2s ease;
-}

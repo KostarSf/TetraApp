@@ -2,7 +2,7 @@ import './App.css';
 import Dashboard from './Dashboard';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import help from './help.svg';
+import HelpButton from './HelpButton';
 
 function App() {
   return (
@@ -14,9 +14,7 @@ function App() {
           <div className='main__scroll'>
             <Dashboard />
           </div>
-          <button className='helpbtn'>
-            <img src={help} alt="" />
-          </button>
+          <HelpButton />
         </main>
       </div>
     </div>
