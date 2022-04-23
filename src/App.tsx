@@ -1,8 +1,8 @@
 import './App.css';
-import Dashboard from './Dashboard';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import HelpButton from './HelpButton';
+import Dashboard from './components/dashboard/Dashboard';
+import Header from './components/header/Header';
+import Sidebar from './components/sidebar/Sidebar';
+import HelpButton from './components/helpbutton/HelpButton';
 
 function App() {
   return (

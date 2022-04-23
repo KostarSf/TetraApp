@@ -1,5 +1,5 @@
-import Card from "./Card";
-import CardList from "./CardList";
+import Card from "../card/Card";
+import CardList from "../cardlist/CardList";
 import './dashboard.css';
 import addTaskImg from './addTask.svg';
 
