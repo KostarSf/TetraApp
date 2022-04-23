@@ -2,8 +2,15 @@ import Card from "../card/Card";
 import CardList from "../cardlist/CardList";
 import './dashboard.css';
 import addTaskImg from './addTask.svg';
+import { useState } from "react";
 
-const Dashboard = () => {
+type Props = {
+  onScreenChange: (screen: string) => void;
+}
+
+const Dashboard: React.FC<Props> = ({onScreenChange}) => {
+  const [taskInWork, setTaskInWork] = useState(localStorage.getItem('inwork') === 'true');
+
   return (
     <div className="container-fluid h-100" >
       <div className="d-flex flex-wrap">
@@ -22,34 +29,48 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <div className="d-flex">
-        <div className="d-flex flex-wrap gap-3">
-          <CardList title="Новые задачи" color="#57BBF3">
+      <div className="listswrapper row">
+        <CardList title="Новые задачи" color="#57BBF3">
+          {!taskInWork &&
             <Card
-              title="Card title"
-              description="Some quick example text to build on the card title and make up the bulk of the card's content."
+              title="Провести опрос"
+              description="В связи с модернизацией парка автомобилей общественного транспорта."
               isNew={true}
-              date="2 дня"
-              onClick={() => { }}
+              date="Сегодня"
+              onClick={() => {
+                localStorage.setItem('screen', 'task');
+                onScreenChange('task');
+              }}
             />
-          </CardList>
-          <CardList title="В работе" color="#DF0303">
+          }
+        </CardList>
+        <CardList title="В работе" color="#DF0303">
+          {taskInWork &&
             <Card
-              title="Card title"
-              description="Some quick example text to build on the card title and make up the bulk of the card's content."
+              title="Провести опрос"
+              description="В связи с модернизацией парка автомобилей общественного транспорта."
               isNew={false}
-              date="2 дня"
-              onClick={() => { }}
+              date="Сегодня"
+              onClick={() => {
+                localStorage.setItem('screen', 'task');
+                onScreenChange('task');
+              }}
             />
-          </CardList>
-          <CardList title="Сбор обратной связи" color="#F2C85F">
+          }
+        </CardList>
+        <CardList title="Сбор обратной связи" color="#F2C85F">
+          <Card
+            title="Модернизировать транспорт"
+            description="Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города."
+            isNew={false}
+            date="2 дня назад"
+            onClick={() => { }}
+          />
+        </CardList>
+        <CardList title="Выполнено" color="#4DCDAE">
 
-          </CardList>
-          <CardList title="Выполнено" color="#4DCDAE">
-
-          </CardList>
-        </div>
-        <button className="addTaskBtn">
+        </CardList>
+        <button className="addTaskBtn  col-xxl-2 col-xl-3 col-lg-4 col-md-5">
           <img src={addTaskImg} alt="" />
         </button>
       </div>

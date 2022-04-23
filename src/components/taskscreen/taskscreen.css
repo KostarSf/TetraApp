@@ -1,0 +1,9 @@
+.brdlink:hover {
+    cursor: pointer;
+    color: black !important;
+}
+
+.spacer {
+    height: 1px;
+    padding: 50px;
+}

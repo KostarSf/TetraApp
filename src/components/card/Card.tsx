@@ -19,10 +19,11 @@ const Card: React.FC<Props> = ({
         <div className={"card " + st.card} style={{ cursor: 'pointer' }} onClick={onClick}>
             <div className="card-body">
                 <h5 className="card-title">
-                    {title} {isNew && <span className="badge bg-primary ms-3">Новая</span>}
+                    {title}
                 </h5>
+
                 <p className="card-text">{description}</p>
-                <p className="text-primary fs-5 mb-0">{date}</p>
+                <p className="text-primary fs-5 mb-0 d-flex justify-content-between align-items-end"><span>{date}</span> {isNew && <span className="badge bg-primary">Новая</span>}</p>
             </div>
         </div>
     );
