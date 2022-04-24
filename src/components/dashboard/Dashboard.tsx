@@ -8,7 +8,7 @@ type Props = {
   onScreenChange: (screen: string) => void;
 }
 
-const Dashboard: React.FC<Props> = ({onScreenChange}) => {
+const Dashboard: React.FC<Props> = ({ onScreenChange }) => {
   const [taskInWork, setTaskInWork] = useState(localStorage.getItem('inwork') === 'true');
 
   return (
@@ -44,7 +44,7 @@ const Dashboard: React.FC<Props> = ({onScreenChange}) => {
             />
           }
         </CardList>
-        <CardList title="В работе" color="#DF0303">
+        <CardList title="В работе" color="#4DCDAE">
           {taskInWork &&
             <Card
               title="Провести опрос"
@@ -58,7 +58,7 @@ const Dashboard: React.FC<Props> = ({onScreenChange}) => {
             />
           }
         </CardList>
-        <CardList title="Сбор обратной связи" color="#F2C85F">
+        <CardList title="Нужна информация" color="#F2C85F">
           <Card
             title="Модернизировать транспорт"
             description="Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города."
@@ -67,7 +67,7 @@ const Dashboard: React.FC<Props> = ({onScreenChange}) => {
             onClick={() => { }}
           />
         </CardList>
-        <CardList title="Выполнено" color="#4DCDAE">
+        <CardList title="Выполнено" color="#AAAAAA">
 
         </CardList>
         <button className="addTaskBtn  col-xxl-2 col-xl-3 col-lg-4 col-md-5">

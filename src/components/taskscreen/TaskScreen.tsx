@@ -10,6 +10,8 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
   const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
   const [taskData, setTaskData] = useState<ModalDto>();
 
+  const [membersField, setMembersField] = useState('');
+
   useEffect(() => {
     const data = localStorage.getItem('taskdata');
     if (data) {
@@ -26,7 +28,7 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
         setInWork(true);
       }
 
-      }/>
+      } />
       <div>
         <div className="d-flex flex-wrap">
           <nav className="py-2 px-3 rounded-2 mt-3 me-0 me-sm-3" aria-label="breadcrumb" style={{ background: '#E9ECEF' }}>
@@ -47,7 +49,7 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
         <div className="row">
           <div className='col-xl-8 col-lg-7 col-md-7'>
             <div className='p-3'>
-              <h2>Провести опрос</h2>
+              <h2>Провести опрос {!inWork && <span className="badge bg-primary ms-4 fs-5">Новое</span>}</h2>
               <p>В связи с модернизацией парка автомобилей общественного транспорта.</p>
               <div className='d-flex gap-4 flex-wrap text-secondary'>
                 Добавлено сегодня, в 14:05
@@ -59,8 +61,8 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
                     </>
                     :
                     <>
-                      <span className='p-1 rounded-circle badge bg-danger d-inline-block'></span>
-                      <span className='ms-2'>В работе</span>
+                      <span className='p-1 rounded-circle badge bg-success d-inline-block'></span>
+                      <span className='ms-2 ' >В работе</span>
                     </>
                   }
                 </p>
@@ -72,15 +74,20 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
                       Взять в работу
                     </button>
                     <button className='btn btn-warning'>Нужна информация</button>
+                    <button className='btn btn-primary'>Закрыть задачу</button>
                   </>
                 }
                 {inWork &&
-                  <button className='btn btn-outline-danger' onClick={() => {
-                    localStorage.setItem('inwork', 'false');
-                    localStorage.removeItem('taskdata');
-                    setTaskData(undefined);
-                    setInWork(false);
-                  }}>В работе</button>
+                  <>
+                    <button className='btn btn-outline-success' onClick={() => {
+                      localStorage.setItem('inwork', 'false');
+                      localStorage.removeItem('taskdata');
+                      setTaskData(undefined);
+                      setInWork(false);
+                    }}>В работе</button>
+                    <button className='btn btn-warning'>Нужна информация</button>
+                    <button className='btn btn-primary'>Закрыть задачу</button>
+                  </>
                 }
 
               </div>
@@ -101,12 +108,42 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
                   <div className="col">{taskData.rate}</div>
                 </div>
                 <div className='row mb-3' >
-                  <div className="col text-secondary">Ответств.</div>
+                  <div className="col text-secondary">Ответств.:</div>
                   <div className="col">{taskData.resp}</div>
                 </div>
                 <div className='row flex-wrap' >
-                  <div className="col text-secondary">Участники</div>
-                  <div className="col">{taskData.memb}</div>
+                  <div className="col text-secondary">Участники:</div>
+                  <div className="col">
+                    <ul className='list-group list-group-flush'>
+                      {taskData.memb.map(i => <li className='list-group-item ps-0'>
+                        {i}
+                      </li>)}
+                    </ul>
+                    <a href='#' className='link ps-0' data-bs-toggle="modal" data-bs-target="#exampleModal2" onClick={() => {
+                      setMembersField(taskData.memb.join(', '));
+                    }}>изменить</a>
+                    <div className="modal fade" id="exampleModal2" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div className="modal-dialog">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Изменить участников</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div className="modal-body">
+                            <input type="text" className="form-control" placeholder="Участники, через запятую" value={membersField} onChange={e => setMembersField(e.target.value)} />
+                          </div>
+                          <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
+                              const dto: ModalDto = { ...taskData, memb: membersField.split(',').map(i => i.trim()) };
+                              setTaskData(dto);
+                              localStorage.setItem('taskdata', JSON.stringify(dto));
+                            }}>Сохранить</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -121,16 +158,16 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
 type ModalDto = {
   rate: string;
   resp: string;
-  memb: string;
+  memb: string[];
 }
 
 type ModalProps = {
   onApprove: (dto: ModalDto) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({onApprove}) => {
+const Modal: React.FC<ModalProps> = ({ onApprove }) => {
   const [rate, setRate] = useState('none');
-  const [resp, setResp] = useState('');
+  const [resp, setResp] = useState('Максим Песков');
   const [memb, setMemb] = useState('');
 
   return (
@@ -155,12 +192,12 @@ const Modal: React.FC<ModalProps> = ({onApprove}) => {
 
               <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Ответственный</label>
-                <input value={resp} onChange={e => setResp(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="ФИО Ответственного" />
+                <input value={resp} onChange={e => setResp(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Ответственный" />
               </div>
 
               <div className="mb-3">
                 <label htmlFor="exampleFormControlInput1" className="form-label">Участники</label>
-                <input value={memb} onChange={e => setMemb(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="ФИО Участников через запятую" />
+                <input value={memb} onChange={e => setMemb(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Участники, через запятую" />
               </div>
             </form>
           </div>
@@ -168,10 +205,10 @@ const Modal: React.FC<ModalProps> = ({onApprove}) => {
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
             <button type="button" className="btn btn-primary" onClick={() => {
               onApprove({
-                rate, resp, memb
+                rate, resp, memb: memb.split(',').map(i => i.trim())
               });
               setRate('none');
-              setResp('');
+              setResp('Максим Песков');
               setMemb('');
             }} data-bs-dismiss="modal">Подтвердить</button>
           </div>

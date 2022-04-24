@@ -23,7 +23,7 @@ const Card: React.FC<Props> = ({
                 </h5>
 
                 <p className="card-text">{description}</p>
-                <p className="text-primary fs-5 mb-0 d-flex justify-content-between align-items-end"><span>{date}</span> {isNew && <span className="badge bg-primary">Новая</span>}</p>
+                <p className="text-primary fs-5 mb-0 d-flex justify-content-between align-items-end"><span>{date}</span> {isNew && <span className="badge bg-primary">Новое</span>}</p>
             </div>
         </div>
     );
