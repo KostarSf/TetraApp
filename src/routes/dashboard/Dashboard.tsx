@@ -32,7 +32,7 @@ const Dashboard: React.FC<Props> = ({  }) => {
       </div>
 
       <div className="listswrapper row">
-        {boards.map(board => (
+        {boards.sort((a, b) => a.order - b.order).map(board => (
           <CardList title={board.title} color={board.color} key={board.id}>
             {board.tasks && board.tasks.map(task => (
               <Card task={task} key={task.id}/>
