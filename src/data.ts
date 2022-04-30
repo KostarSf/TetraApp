@@ -3,6 +3,7 @@ export type BoardDto = {
   order: number;
   title: string;
   color: string;
+  workBoard: boolean;
   tasks: TaskDto[];
 }
 
@@ -21,6 +22,7 @@ let boards: BoardDto[] = [
     order: 1,
     title: 'Новые задачи',
     color: '#57bbf3',
+    workBoard: false,
     tasks: [
       {
         id: 1,
@@ -37,6 +39,7 @@ let boards: BoardDto[] = [
     order: 2,
     title: 'В работе',
     color: '#4dcdae',
+    workBoard: true,
     tasks: [
 
     ]
@@ -46,6 +49,7 @@ let boards: BoardDto[] = [
     order: 3,
     title: 'Нужна информация',
     color: '#f2c85f',
+    workBoard: false,
     tasks: [
 
     ]
@@ -55,6 +59,7 @@ let boards: BoardDto[] = [
     order: 4,
     title: 'Выполнено',
     color: '#aaaaaa',
+    workBoard: false,
     tasks: [
 
     ]
