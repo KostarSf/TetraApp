@@ -5,10 +5,9 @@ import addTaskImg from './addTask.svg';
 import { useState } from "react";
 
 type Props = {
-  onScreenChange: (screen: string) => void;
 }
 
-const Dashboard: React.FC<Props> = ({ onScreenChange }) => {
+const Dashboard: React.FC<Props> = ({  }) => {
   const [taskInWork, setTaskInWork] = useState(localStorage.getItem('inwork') === 'true');
 
   return (
@@ -39,7 +38,6 @@ const Dashboard: React.FC<Props> = ({ onScreenChange }) => {
               date="Сегодня"
               onClick={() => {
                 localStorage.setItem('screen', 'task');
-                onScreenChange('task');
               }}
             />
           }
@@ -53,7 +51,6 @@ const Dashboard: React.FC<Props> = ({ onScreenChange }) => {
               date="Сегодня"
               onClick={() => {
                 localStorage.setItem('screen', 'task');
-                onScreenChange('task');
               }}
             />
           }

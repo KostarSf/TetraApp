@@ -3,10 +3,9 @@ import Comments from '../comments/Comments';
 import './taskscreen.css';
 
 type Props = {
-  onScreenChange: (screen: string) => void;
 }
 
-const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
+const TaskScreen: React.FC<Props> = ({  }) => {
   const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
   const [taskData, setTaskData] = useState<ModalDto>();
 
@@ -37,7 +36,6 @@ const TaskScreen: React.FC<Props> = ({ onScreenChange }) => {
               <li className="breadcrumb-item text-secondary brdlink">Городское управление</li>
               <li className="breadcrumb-item text-secondary brdlink" onClick={() => {
                 localStorage.setItem('screen', 'dashboard');
-                onScreenChange('dashboard');
               }}>
                 Цифровой двойник города
               </li>
