@@ -1,5 +1,5 @@
-import Card from "../card/Card";
-import CardList from "../cardlist/CardList";
+import Card from "../../components/card/Card";
+import CardList from "../../components/cardlist/CardList";
 import './dashboard.css';
 import addTaskImg from './addTask.svg';
 import { useState } from "react";

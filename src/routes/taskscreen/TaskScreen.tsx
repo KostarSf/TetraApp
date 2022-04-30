@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Comments from '../comments/Comments';
+import Comments from '../../components/comments/Comments';
 import './taskscreen.css';
 
 type Props = {

@@ -6,8 +6,8 @@ import './index.css';
 import App from './App';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import Redirect from './components/Redirect';
-import Dashboard from './components/dashboard/Dashboard';
-import TaskScreen from './components/taskscreen/TaskScreen';
+import Dashboard from './routes/dashboard/Dashboard';
+import TaskScreen from './routes/taskscreen/TaskScreen';
 import Page404 from './routes/Page404';
 
 const root = ReactDOM.createRoot(
