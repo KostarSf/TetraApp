@@ -4,19 +4,17 @@ type Props = {
     title: string;
     description: string;
     date: string;
-    isNew: boolean;
-    onClick: () => void;
 }
 
 const Card: React.FC<Props> = ({
     title,
     description,
     date,
-    isNew,
-    onClick
 }) => {
+    const isNew = false;
+
     return (
-        <div className={"card " + st.card} style={{ cursor: 'pointer' }} onClick={onClick}>
+        <div className={"card " + st.card} style={{ cursor: 'pointer' }}>
             <div className="card-body">
                 <h5 className="card-title">
                     {title}
