@@ -70,3 +70,12 @@ let boards: BoardDto[] = [
 export const getAllBoards = () => {
   return boards;
 }
+
+export const getTaskById = (id: number) => {
+  for (let i = 0; i < boards.length; i++) {
+    for (let j = 0; j < (boards[i].tasks?.length || 0); j++) {
+      let task = boards[i].tasks![j];
+      if (task.id === id) return task;
+    }
+  }
+}
