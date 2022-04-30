@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import './index.css';
 import App from './App';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import Redirect from './components/Redirect';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,6 +14,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<Outlet/>}>
+        <Route index element={<Redirect to='/dashboard' replace />} />
         <Route path='dashboard' element={<App />}/>
         <Route path='task/:taskId' element={<div>taskpage</div>} />
         <Route path='*' element={<div>404</div>} />
