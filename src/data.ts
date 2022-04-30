@@ -2,8 +2,10 @@ export type BoardDto = {
   id: number;
   order: number;
   title: string;
+  actionName: string;
   color: string;
-  workBoard: boolean;
+  workBoard?: boolean;
+  newBoard?: boolean;
   tasks?: TaskDto[];
 }
 
@@ -21,8 +23,9 @@ let boards: BoardDto[] = [
     id: 1,
     order: 1,
     title: 'Новые задачи',
+    actionName: 'Новые задачи',
     color: '#57bbf3',
-    workBoard: false,
+    newBoard: true,
     tasks: [
       {
         id: 1,
@@ -36,17 +39,18 @@ let boards: BoardDto[] = [
   },
   {
     id: 2,
-    order: 2,
+    order: 3,
     title: 'В работе',
+    actionName: 'Взять в работу',
     color: '#4dcdae',
     workBoard: true,
   },
   {
     id: 3,
-    order: 3,
+    order: 2,
     title: 'Нужна информация',
+    actionName: 'Нужна информация',
     color: '#f2c85f',
-    workBoard: false,
     tasks: [
       {
         id: 2,
@@ -54,16 +58,16 @@ let boards: BoardDto[] = [
         title: 'Модернизировать транспорт',
         description: 'Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города.',
         legend: 'text',
-        creationDate: '2022-04-28T13:38:06.857Z'
+        creationDate: '2022-04-28T14:08:06.857Z'
       }
     ]
   },
   {
     id: 4,
     order: 4,
-    title: 'Выполнено',
+    title: 'Закрыто',
+    actionName: 'Закрыть задачу',
     color: '#aaaaaa',
-    workBoard: false,
   },
 ]
 
@@ -78,4 +82,8 @@ export const getTaskById = (id: number) => {
       if (task.id === id) return task;
     }
   }
+}
+
+export const getBoardByTask = (task: TaskDto) =>{
+  return boards.find(b => b.id === task.boardId);
 }
