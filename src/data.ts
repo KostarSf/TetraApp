@@ -4,7 +4,7 @@ export type BoardDto = {
   title: string;
   color: string;
   workBoard: boolean;
-  tasks: TaskDto[];
+  tasks?: TaskDto[];
 }
 
 export type TaskDto = {
@@ -30,7 +30,7 @@ let boards: BoardDto[] = [
         title: 'Провести опрос',
         description: 'В связи с модернизацией парка автомобилей общественного транспорта.',
         legend: 'text',
-        creationDate: '2022-04-30T13:28:31.803Z'
+        creationDate: '2022-04-30T13:38:06.857Z'
       }
     ]
   },
@@ -40,9 +40,6 @@ let boards: BoardDto[] = [
     title: 'В работе',
     color: '#4dcdae',
     workBoard: true,
-    tasks: [
-
-    ]
   },
   {
     id: 3,
@@ -51,7 +48,14 @@ let boards: BoardDto[] = [
     color: '#f2c85f',
     workBoard: false,
     tasks: [
-
+      {
+        id: 2,
+        boardId: 3,
+        title: 'Модернизировать транспорт',
+        description: 'Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города.',
+        legend: 'text',
+        creationDate: '2022-04-28T13:38:06.857Z'
+      }
     ]
   },
   {
@@ -60,9 +64,6 @@ let boards: BoardDto[] = [
     title: 'Выполнено',
     color: '#aaaaaa',
     workBoard: false,
-    tasks: [
-
-    ]
   },
 ]
 
