@@ -6,6 +6,9 @@ import './index.css';
 import App from './App';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import Redirect from './components/Redirect';
+import Dashboard from './components/dashboard/Dashboard';
+import TaskScreen from './components/taskscreen/TaskScreen';
+import Page404 from './routes/Page404';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,11 +16,14 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path='/' element={<Outlet/>}>
+      <Route path='/' element={<App />}>
         <Route index element={<Redirect to='/dashboard' replace />} />
-        <Route path='dashboard' element={<App />}/>
-        <Route path='task/:taskId' element={<div>taskpage</div>} />
-        <Route path='*' element={<div>404</div>} />
+        <Route path='dashboard' element={<Dashboard />}/>
+        <Route path='task'>
+          <Route index element={<Redirect to='/' replace />}/>
+          <Route path=':taskId' element={<TaskScreen />} />
+        </Route>
+        <Route path='*' element={<Page404 />} />
       </Route>
     </Routes>
   </BrowserRouter>
