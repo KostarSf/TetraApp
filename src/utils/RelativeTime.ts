@@ -5,6 +5,13 @@ export class RelativeTime {
     return Math.floor(delta / 60);
   }
 
+  static displayTime(date: string) {
+    const time = new Date(date);
+
+    return `${time.getHours()}:${time.getMinutes() < 10 ?
+        '0' + time.getMinutes() : time.getMinutes()}`
+  }
+
   static fromNowOn(date: string) {
     var delta = Math.round((+new Date() - Date.parse(new Date(date).toISOString())) / 1000);
 
