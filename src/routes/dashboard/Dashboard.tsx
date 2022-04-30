@@ -2,13 +2,16 @@ import Card from "../../components/card/Card";
 import CardList from "../../components/cardlist/CardList";
 import './dashboard.css';
 import addTaskImg from './addTask.svg';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BoardDto, getAllBoards } from "../../data";
 
 type Props = {
 }
 
 const Dashboard: React.FC<Props> = ({  }) => {
-  const [taskInWork, setTaskInWork] = useState(localStorage.getItem('inwork') === 'true');
+  const [boards, setBoards] = useState<BoardDto[]>([]);
+
+  useEffect(() => setBoards(getAllBoards()), [])
 
   return (
     <div className="container-fluid h-100" >
@@ -29,44 +32,13 @@ const Dashboard: React.FC<Props> = ({  }) => {
       </div>
 
       <div className="listswrapper row">
-        <CardList title="Новые задачи" color="#57BBF3">
-          {!taskInWork &&
-            <Card
-              title="Провести опрос"
-              description="В связи с модернизацией парка автомобилей общественного транспорта."
-              isNew={true}
-              date="Сегодня"
-              onClick={() => {
-                localStorage.setItem('screen', 'task');
-              }}
-            />
-          }
-        </CardList>
-        <CardList title="В работе" color="#4DCDAE">
-          {taskInWork &&
-            <Card
-              title="Провести опрос"
-              description="В связи с модернизацией парка автомобилей общественного транспорта."
-              isNew={false}
-              date="Сегодня"
-              onClick={() => {
-                localStorage.setItem('screen', 'task');
-              }}
-            />
-          }
-        </CardList>
-        <CardList title="Нужна информация" color="#F2C85F">
-          <Card
-            title="Модернизировать транспорт"
-            description="Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города."
-            isNew={false}
-            date="2 дня назад"
-            onClick={() => { }}
-          />
-        </CardList>
-        <CardList title="Выполнено" color="#AAAAAA">
-
-        </CardList>
+        {boards.map(board => (
+          <CardList title={board.title} color={board.color} key={board.id}>
+            {board.tasks && board.tasks.map(task => (
+              <Card task={task} key={task.id}/>
+            ))}
+          </CardList>
+        ))}
         <button className="addTaskBtn  col-xxl-2 col-xl-3 col-lg-4 col-md-5">
           <img src={addTaskImg} alt="" />
         </button>
