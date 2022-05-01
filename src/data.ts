@@ -4,6 +4,7 @@ export type BoardDto = {
   title: string;
   actionName: string;
   color: string;
+  alterColor: string;
   workBoard?: boolean;
   newBoard?: boolean;
   tasks?: TaskDto[];
@@ -25,6 +26,7 @@ let boards: BoardDto[] = [
     title: 'Новые задачи',
     actionName: 'Новые задачи',
     color: '#57bbf3',
+    alterColor: 'primary',
     newBoard: true,
     tasks: [
       {
@@ -32,7 +34,7 @@ let boards: BoardDto[] = [
         boardId: 1,
         title: 'Провести опрос',
         description: 'В связи с модернизацией парка автомобилей общественного транспорта.',
-        legend: 'text',
+        legend: '[p]В связи с недавней модернизацией парка автомобилей общественного транспорта требуется провести социальный опрос, чтобы выявить потенциальные скрытые проблемы и недоработки. [/p] [p]Соответствующий персонал будет выделен из волонтерских подразделений, также будет произведена помощь с набором контрольных групп.[/p]',
         creationDate: '2022-04-30T13:38:06.857Z'
       }
     ]
@@ -43,6 +45,7 @@ let boards: BoardDto[] = [
     title: 'В работе',
     actionName: 'Взять в работу',
     color: '#4dcdae',
+    alterColor: 'success',
     workBoard: true,
   },
   {
@@ -51,6 +54,7 @@ let boards: BoardDto[] = [
     title: 'Нужна информация',
     actionName: 'Нужна информация',
     color: '#f2c85f',
+    alterColor: 'warning',
     tasks: [
       {
         id: 2,
@@ -68,11 +72,16 @@ let boards: BoardDto[] = [
     title: 'Закрыто',
     actionName: 'Закрыть задачу',
     color: '#aaaaaa',
+    alterColor: 'secondary',
   },
 ]
 
 export const getAllBoards = () => {
   return boards;
+}
+
+export const getAllBoardsWithSort = () => {
+  return boards.sort((a, b) => a.order - b.order);
 }
 
 export const getTaskById = (id: number) => {
@@ -86,4 +95,16 @@ export const getTaskById = (id: number) => {
 
 export const getBoardByTask = (task: TaskDto) =>{
   return boards.find(b => b.id === task.boardId);
+}
+
+export const moveTask = (task: TaskDto, board: BoardDto) => {
+  //TODO Rewrite this part due to creating dublicates
+  const newBoard = boards.find(b => b.id === board.id) as BoardDto;
+  if (!newBoard.tasks) {
+    newBoard.tasks = [{ ...task, boardId: board.id }]
+  } else {
+    newBoard.tasks.push({ ...task, boardId: board.id });
+  }
+  const oldBoard = boards.find(b => b.id === task.boardId) as BoardDto;
+  oldBoard.tasks = oldBoard.tasks?.filter(t => t.id !== task.id);
 }
