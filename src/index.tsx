@@ -11,6 +11,8 @@ import TaskScreen from './routes/taskscreen/TaskScreen';
 import Page404 from './routes/Page404';
 import { registerTags } from './utils/BBCodes';
 
+registerTags();
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
