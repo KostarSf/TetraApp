@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { TaskDto } from '../../data';
 import { RelativeTime } from '../../utils/RelativeTime';
 import st from './Card.module.css';
+import React from 'react';
 
 type Props = {
   task: TaskDto
@@ -26,7 +27,7 @@ const Card: React.FC<Props> = ({
           {isNew && <span className="badge bg-primary">Новое</span>}
         </p>
       </div>
-      <Link to={`/task/${task.id}`} style={{position: 'absolute', inset: '0'}}/>
+      <Link to={`/task/${task.id}`} style={{position: 'absolute', inset: '0'}} />
     </div>
   );
 }
