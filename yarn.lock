@@ -1666,6 +1666,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/bbcode-to-react@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@types/bbcode-to-react/-/bbcode-to-react-0.2.0.tgz#7aa9e5c8ba8fea5b1e4968b96413aab426b0c4b7"
+  integrity sha512-qcrZwvQgwiEdZbola1LrGghV7fGxHQCM09Pa/cRVmjpD3dOkE8N/H2S9kuJf1O8wg7AM1J80USyi3pbr1Ra0uQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.npmjs.org/@types/body-parser/-/body-parser-1.19.2.tgz"
@@ -2629,6 +2636,11 @@ batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
   integrity sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY=
+
+bbcode-to-react@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/bbcode-to-react/-/bbcode-to-react-0.2.9.tgz#75ec5358c78e9c2a486a62274bb5f4695fb99e60"
+  integrity sha512-ZuqVg44xi0nqMbZJMB/j1WxVvDnpfQYHLGFdZW8FQfW7uoCMyF48iEUVbYontcdrD5uZTcqMs3qbGeIa/bCi+g==
 
 bfj@^7.0.2:
   version "7.0.2"
