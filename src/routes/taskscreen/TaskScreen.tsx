@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import parser from 'bbcode-to-react';
 import Comments from '../../components/comments/Comments';
+import { BoardDto, getAllBoards, getAllBoardsWithSort, getBoardByTask, getTaskById, moveTask, TaskDto } from '../../data';
+import { RelativeTime } from '../../utils/RelativeTime';
 import './taskscreen.css';
+import ChangeBoardButton from '../../components/changeboardbutton/ChangeBoardButton';
 
-type Props = {
-}
-
-const TaskScreen: React.FC<Props> = ({  }) => {
+const TaskScreen: React.FC = () => {
   const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
   const [taskData, setTaskData] = useState<ModalDto>();
 
   const [membersField, setMembersField] = useState('');
 
+  const [task, setTask] = useState(getTaskById(Number(useParams().taskId)) as TaskDto);
+  const [board, setBoard] = useState(getBoardByTask(task) as BoardDto);
+
+  const isNew = RelativeTime.inMinutes(task.creationDate) < 60 * 24;
+
   useEffect(() => {
-    const data = localStorage.getItem('taskdata');
-    if (data) {
-      setTaskData(JSON.parse(data));
-    }
+
   }, []);
 
   return (
@@ -34,12 +38,14 @@ const TaskScreen: React.FC<Props> = ({  }) => {
             <ol className="breadcrumb m-0">
               <li className="breadcrumb-item text-secondary brdlink">Проекты</li>
               <li className="breadcrumb-item text-secondary brdlink">Городское управление</li>
-              <li className="breadcrumb-item text-secondary brdlink" onClick={() => {
-                localStorage.setItem('screen', 'dashboard');
-              }}>
-                Цифровой двойник города
+              <li className="breadcrumb-item text-secondary brdlink">
+                <Link to='/dashboard' style={{
+                  color: 'black'
+                }}>
+                  Цифровой двойник города
+                </Link>
               </li>
-              <li className="breadcrumb-item active  text-primary" aria-current="page">Провести опрос</li>
+              <li className="breadcrumb-item active  text-primary" aria-current="page">{task.title}</li>
             </ol>
           </nav>
         </div>
@@ -47,53 +53,39 @@ const TaskScreen: React.FC<Props> = ({  }) => {
         <div className="row">
           <div className='col-xl-8 col-lg-7 col-md-7'>
             <div className='p-3'>
-              <h2>Провести опрос {!inWork && <span className="badge bg-primary ms-4 fs-5">Новое</span>}</h2>
-              <p>В связи с модернизацией парка автомобилей общественного транспорта.</p>
+              <h2>{task.title} {isNew && <span className="badge bg-primary ms-4 fs-5">Новое</span>}</h2>
+              <p>{task.description}</p>
               <div className='d-flex gap-4 flex-wrap text-secondary'>
-                Добавлено сегодня, в 14:05
+                Добавлено {RelativeTime.fromNowOn(task.creationDate).toLowerCase()}, в {RelativeTime.displayTime(task.creationDate)}
                 <p className='position-relative'>
-                  {!inWork ?
-                    <>
-                      <span className='p-1 rounded-circle badge bg-primary d-inline-block'></span>
-                      <span className='ms-2'>Новая задача</span>
-                    </>
-                    :
-                    <>
-                      <span className='p-1 rounded-circle badge bg-success d-inline-block'></span>
-                      <span className='ms-2 ' >В работе</span>
-                    </>
-                  }
+                  <>
+                    <span className={`p-1 rounded-circle badge d-inline-block bg-${board.alterColor}`}></span>
+                    <span className='ms-2 ' >{board.title}</span>
+                  </>
                 </p>
               </div>
               <div className='d-flex gap-2'>
-                {!inWork &&
-                  <>
-                    <button className='btn btn-success' data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Взять в работу
-                    </button>
-                    <button className='btn btn-warning'>Нужна информация</button>
-                    <button className='btn btn-primary'>Закрыть задачу</button>
-                  </>
-                }
-                {inWork &&
-                  <>
-                    <button className='btn btn-outline-success' onClick={() => {
-                      localStorage.setItem('inwork', 'false');
-                      localStorage.removeItem('taskdata');
-                      setTaskData(undefined);
-                      setInWork(false);
-                    }}>В работе</button>
-                    <button className='btn btn-warning'>Нужна информация</button>
-                    <button className='btn btn-primary'>Закрыть задачу</button>
-                  </>
-                }
-
+                {getAllBoardsWithSort().map(b => {
+                  if (b.newBoard) return <></>
+                  return (
+                    <ChangeBoardButton
+                      onClick={(t, b) => {
+                        moveTask(t, b);
+                        setTask(t);
+                        setBoard(b);
+                      }}
+                      key={b.id}
+                      current={board.id === b.id}
+                      board={b}
+                      task={task}
+                    />
+                  )
+                })}
               </div>
             </div>
             <hr />
-            <div className='p-3'>
-              <p className='fs-5'>В связи с недавней модернизацией парка автомобилей общественного транспорта требуется провести социальный опрос, чтобы выявить потенциальные скрытые проблемы и недоработки.</p>
-              <p className='fs-5'>Соответствующий персонал будет выделен из волонтерских подразделений, также будет произведена помощь с набором контрольных групп.</p>
+            <div className='p-3 fs-5'>
+              {parser.toReact(task.legend)}
             </div>
             <hr />
             <Comments />
