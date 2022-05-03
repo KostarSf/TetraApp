@@ -28,16 +28,6 @@ let boards: BoardDto[] = [
     color: '#57bbf3',
     alterColor: 'primary',
     newBoard: true,
-    tasks: [
-      {
-        id: 1,
-        boardId: 1,
-        title: 'Провести опрос',
-        description: 'В связи с модернизацией парка автомобилей общественного транспорта.',
-        legend: '[p]В связи с недавней модернизацией парка автомобилей общественного транспорта требуется провести социальный опрос, чтобы выявить потенциальные скрытые проблемы и недоработки. [/p] [p]Соответствующий персонал будет выделен из волонтерских подразделений, также будет произведена помощь с набором контрольных групп.[/p]',
-        creationDate: '2022-04-30T13:38:06.857Z'
-      }
-    ]
   },
   {
     id: 2,
@@ -55,16 +45,6 @@ let boards: BoardDto[] = [
     actionName: 'Нужна информация',
     color: '#f2c85f',
     alterColor: 'warning',
-    tasks: [
-      {
-        id: 2,
-        boardId: 3,
-        title: 'Модернизировать транспорт',
-        description: 'Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города.',
-        legend: 'text',
-        creationDate: '2022-04-28T14:08:06.857Z'
-      }
-    ]
   },
   {
     id: 4,
@@ -76,21 +56,39 @@ let boards: BoardDto[] = [
   },
 ]
 
+let tasks: TaskDto[] = [
+  {
+    id: 1,
+    boardId: 1,
+    title: 'Провести опрос',
+    description: 'В связи с модернизацией парка автомобилей общественного транспорта.',
+    legend: '[p]В связи с недавней модернизацией парка автомобилей общественного транспорта требуется провести социальный опрос, чтобы выявить потенциальные скрытые проблемы и недоработки. [/p] [p]Соответствующий персонал будет выделен из волонтерских подразделений, также будет произведена помощь с набором контрольных групп.[/p]',
+    creationDate: '2022-04-30T13:38:06.857Z'
+  },
+  {
+    id: 2,
+    boardId: 3,
+    title: 'Модернизировать транспорт',
+    description: 'Обновить парк автомобилей, оборудовать терминалами бесконтактной оплаты более 90% общественного транспорта города.',
+    legend: 'text',
+    creationDate: '2022-04-28T14:08:06.857Z'
+  }
+]
+
+export const getTasksOfBoard = (boardId: number) => {
+  return tasks.filter((t) => t.boardId === boardId);
+}
+
 export const getAllBoards = () => {
-  return boards;
+  return boards.map(b => ({...b, tasks: getTasksOfBoard(b.id)}))
 }
 
 export const getAllBoardsWithSort = () => {
-  return boards.sort((a, b) => a.order - b.order);
+  return getAllBoards().sort((a, b) => a.order - b.order);
 }
 
-export const getTaskById = (id: number) => {
-  for (let i = 0; i < boards.length; i++) {
-    for (let j = 0; j < (boards[i].tasks?.length || 0); j++) {
-      let task = boards[i].tasks![j];
-      if (task.id === id) return task;
-    }
-  }
+export const getTaskById = (taskId: number) => {
+  return tasks.find(t => t.id === taskId);
 }
 
 export const getBoardByTask = (task: TaskDto) =>{
@@ -98,13 +96,8 @@ export const getBoardByTask = (task: TaskDto) =>{
 }
 
 export const moveTask = (task: TaskDto, board: BoardDto) => {
-  //TODO Rewrite this part due to creating dublicates
-  const newBoard = boards.find(b => b.id === board.id) as BoardDto;
-  if (!newBoard.tasks) {
-    newBoard.tasks = [{ ...task, boardId: board.id }]
-  } else {
-    newBoard.tasks.push({ ...task, boardId: board.id });
-  }
-  const oldBoard = boards.find(b => b.id === task.boardId) as BoardDto;
-  oldBoard.tasks = oldBoard.tasks?.filter(t => t.id !== task.id);
+  tasks = tasks.map(t => {
+    if (t.id !== task.id) return t;
+    return {...t, boardId: board.id};
+  })
 }
