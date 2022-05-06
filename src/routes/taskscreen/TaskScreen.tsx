@@ -65,8 +65,7 @@ const TaskScreen: React.FC = () => {
                 </p>
               </div>
               <div className='d-flex gap-2'>
-                {getAllBoardsWithSort().map(b => {
-                  if (b.newBoard) return <></>
+                {getAllBoardsWithSort().filter(b => !b.newBoard).map(b => {
                   return (
                     <ChangeBoardButton
                       onClick={(t, b) => {
