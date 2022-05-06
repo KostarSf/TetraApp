@@ -19,6 +19,22 @@ export type TaskDto = {
   creationDate: string
 }
 
+export type UserDto = {
+  id: number,
+  fullName: string,
+  avatarUrl?: string,
+}
+
+export type CommentDto = {
+  id: number,
+  taskId: number,
+  parentCommentId?: number,
+  userId: number,
+  text: string,
+  timestamp: number,
+  user?: UserDto,
+}
+
 let boards: BoardDto[] = [
   {
     id: 1,
@@ -75,6 +91,29 @@ let tasks: TaskDto[] = [
   }
 ]
 
+let users: UserDto[] = [
+  {
+    id: 1,
+    fullName: 'Максим Песков',
+  },
+  {
+    id: 2,
+    fullName: 'Михаил Кортунов'
+  }
+]
+
+let lastCommentId = 1
+
+let comments: CommentDto[] = [
+  {
+    id: 1,
+    taskId: 1,
+    userId: 2,
+    text: 'Мы подготовим команду тестирования',
+    timestamp: 1651572429000
+  }
+]
+
 export const getTasksOfBoard = (boardId: number) => {
   return tasks.filter((t) => t.boardId === boardId);
 }
@@ -92,7 +131,35 @@ export const getTaskById = (taskId: number) => {
 }
 
 export const getBoardByTask = (task: TaskDto) =>{
-  return boards.find(b => b.id === task.boardId);
+  return getAllBoards().find(b => b.id === task.boardId);
+}
+
+export const getUserById = (userId: number) => {
+  return users.find(u => u.id === userId);
+}
+
+export const getAllComments = () => {
+  return comments.map(c => ({...c, user: getUserById(c.userId)}));
+}
+
+export const getCommentsByTask = (task: TaskDto) => {
+  return getAllComments().filter(c => c.taskId === task.id);
+}
+
+export  const getCommentById = (id: number): CommentDto | undefined => {
+  return getAllComments().find(c => c.id === id);
+}
+
+export const createComment = (text: string, taskId: number, userId: number, parentCommentId: number | undefined = undefined) => {
+  comments.push({
+    id: ++lastCommentId,
+    taskId,
+    userId,
+    text,
+    parentCommentId,
+    timestamp: Date.now()
+  });
+  return getCommentById(lastCommentId);
 }
 
 export const moveTask = (task: TaskDto, board: BoardDto) => {
