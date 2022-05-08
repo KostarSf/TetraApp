@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import parser from 'bbcode-to-react';
 import CommentsList from '../../components/comments/CommentsList';
-import { BoardDto, getAllBoards, getAllBoardsWithSort, getBoardByTask, getTaskById, moveTask, TaskDto } from '../../data';
+import { BoardDto, getAllBoardsWithSort, getBoardByTask, getTaskById, moveTask, TaskDto } from '../../data';
 import { RelativeTime } from '../../utils/RelativeTime';
 import './taskscreen.css';
 import ChangeBoardButton from '../../components/changeboardbutton/ChangeBoardButton';
+import Fakecrumb from '../../components/fakecrumb/Fakecrumb';
 
 const TaskScreen: React.FC = () => {
   const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
@@ -29,26 +30,13 @@ const TaskScreen: React.FC = () => {
         localStorage.setItem('taskdata', JSON.stringify(dto));
         setTaskData(dto);
         setInWork(true);
-      }
-
-      } />
+      }} />
       <div>
-        <div className="d-flex flex-wrap">
-          <nav className="py-2 px-3 rounded-2 mt-3 me-0 me-sm-3" aria-label="breadcrumb" style={{ background: '#E9ECEF' }}>
-            <ol className="breadcrumb m-0">
-              <li className="breadcrumb-item text-secondary brdlink">Проекты</li>
-              <li className="breadcrumb-item text-secondary brdlink">Городское управление</li>
-              <li className="breadcrumb-item text-secondary brdlink">
-                <Link to='/dashboard' style={{
-                  color: 'black'
-                }}>
-                  Цифровой двойник города
-                </Link>
-              </li>
-              <li className="breadcrumb-item active  text-primary" aria-current="page">{task.title}</li>
-            </ol>
-          </nav>
-        </div>
+        <Fakecrumb
+          fakeItems={['Проекты', 'Городское управление']}
+          items={[{ title: 'Цифровой двойник города', link: '/dashboard'}]}
+          currentItem={task.title}
+        />
 
         <div className="row">
           <div className='col-xl-8 col-lg-7 col-md-7'>
