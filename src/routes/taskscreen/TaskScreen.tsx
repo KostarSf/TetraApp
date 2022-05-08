@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import parser from 'bbcode-to-react';
-import Comments from '../../components/comments/Comments';
+import CommentsList from '../../components/comments/CommentsList';
 import { BoardDto, getAllBoards, getAllBoardsWithSort, getBoardByTask, getTaskById, moveTask, TaskDto } from '../../data';
 import { RelativeTime } from '../../utils/RelativeTime';
 import './taskscreen.css';
@@ -87,7 +87,7 @@ const TaskScreen: React.FC = () => {
               {parser.toReact(task.legend)}
             </div>
             <hr />
-            <Comments />
+            <CommentsList taskId={task.id} />
           </div>
           {taskData &&
             <div className='col'>
