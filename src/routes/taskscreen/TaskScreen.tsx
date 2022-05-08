@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import parser from 'bbcode-to-react';
 import CommentsList from '../../components/comments/CommentsList';
 import { RelativeTime } from '../../utils/RelativeTime';
