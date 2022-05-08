@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {CommentDto, createComment, getCommentsByTaskId} from "../../data";
+import DataActions from '../../utils/data/DataActions';
+import { CommentDto } from '../../utils/data/Types';
 import Comment from './Comment';
 import MessageField from './MessageField';
 
@@ -15,7 +16,7 @@ const CommentsList: React.FC<CommentsListProps> = ({taskId}) => {
   }
 
   const fetchComments = () => {
-    const comments = getCommentsByTaskId(taskId);
+    const comments = DataActions.getCommentsByTaskId(taskId);
     setComments(sortComments(comments));
   }
 
@@ -24,7 +25,7 @@ const CommentsList: React.FC<CommentsListProps> = ({taskId}) => {
   }, [])
 
   const onReplyHandle = (text: string, taskId: number, userId: number, parentCommentId: number) => {
-    createComment(text, taskId, userId, parentCommentId);
+    DataActions.createComment(text, taskId, userId, parentCommentId);
     fetchComments();
   }
 
@@ -42,7 +43,7 @@ const CommentsList: React.FC<CommentsListProps> = ({taskId}) => {
     <div className='p-3'>
       <h5 className='mb-3'>Обсуждение задачи</h5>
       <MessageField onSend={(message) => {
-        createComment(message, taskId, 1);
+        DataActions.createComment(message, taskId, 1);
         fetchComments();
       }}/>
       {!comments.length && <div className='py-3'>Здесь еще нет комментариев</div> }

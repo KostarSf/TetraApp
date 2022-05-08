@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { CommentDto, getCurrentUser } from '../../data';
+import DataActions from '../../utils/data/DataActions';
+import { CommentDto } from '../../utils/data/Types';
 import { RelativeTime } from '../../utils/RelativeTime';
 
 type CommentProps = {
@@ -31,7 +32,7 @@ const Comment: React.FC<PropsWithChildren<CommentProps>> = ({ children, onReply,
   }
 
   const onReplyHandle = () => {
-    onReply(replyMessage, taskId, getCurrentUser().id, id);
+    onReply(replyMessage, taskId, DataActions.getCurrentUser().id, id);
     setReplyVisible(false);
     setReplyMessage('');
   }

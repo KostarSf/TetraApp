@@ -3,8 +3,9 @@ import CardList from "../../components/cardlist/CardList";
 import './dashboard.css';
 import addTaskImg from './addTask.svg';
 import { useEffect, useState } from "react";
-import { BoardDto, getAllBoards } from "../../data";
 import Fakecrumb from "../../components/fakecrumb/Fakecrumb";
+import { BoardDto } from "../../utils/data/Types";
+import DataActions from "../../utils/data/DataActions";
 
 type Props = {
 }
@@ -12,7 +13,7 @@ type Props = {
 const Dashboard: React.FC<Props> = ({  }) => {
   const [boards, setBoards] = useState<BoardDto[]>([]);
 
-  useEffect(() => setBoards(getAllBoards()), [])
+  useEffect(() => setBoards(DataActions.getAllBoards()), [])
 
   return (
     <div className="container-fluid h-100" >

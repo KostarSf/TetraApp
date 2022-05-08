@@ -1,5 +1,5 @@
 import React from 'react';
-import { BoardDto, TaskDto } from '../../data';
+import { BoardDto, TaskDto } from '../../utils/data/Types';
 
 type ChangeBoardButtonProps = {
   current: boolean,

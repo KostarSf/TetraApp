@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { TaskDto } from '../../data';
 import { RelativeTime } from '../../utils/RelativeTime';
 import st from './Card.module.css';
 import React from 'react';
+import { TaskDto } from '../../utils/data/Types';
 
 type Props = {
   task: TaskDto

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import parser from 'bbcode-to-react';
 import CommentsList from '../../components/comments/CommentsList';
-import { BoardDto, getAllBoardsWithSort, getBoardByTask, getTaskById, moveTask, TaskDto } from '../../data';
 import { RelativeTime } from '../../utils/RelativeTime';
 import './taskscreen.css';
 import ChangeBoardButton from '../../components/changeboardbutton/ChangeBoardButton';
 import Fakecrumb from '../../components/fakecrumb/Fakecrumb';
+import DataActions from '../../utils/data/DataActions';
+import { BoardDto, TaskDto } from '../../utils/data/Types';
 
 const TaskScreen: React.FC = () => {
   const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
@@ -14,8 +15,8 @@ const TaskScreen: React.FC = () => {
 
   const [membersField, setMembersField] = useState('');
 
-  const [task, setTask] = useState(getTaskById(Number(useParams().taskId)) as TaskDto);
-  const [board, setBoard] = useState(getBoardByTask(task) as BoardDto);
+  const [task, setTask] = useState(DataActions.getTaskById(Number(useParams().taskId)) as TaskDto);
+  const [board, setBoard] = useState(DataActions.getBoardByTask(task) as BoardDto);
 
   const isNew = RelativeTime.inMinutes(task.creationDate) < 60 * 24;
 
@@ -53,11 +54,11 @@ const TaskScreen: React.FC = () => {
                 </p>
               </div>
               <div className='d-flex gap-2'>
-                {getAllBoardsWithSort().filter(b => !b.newBoard).map(b => {
+                {DataActions.getAllBoardsWithSort().filter(b => !b.newBoard).map(b => {
                   return (
                     <ChangeBoardButton
                       onClick={(t, b) => {
-                        moveTask(t, b);
+                        DataActions.moveTask(t, b);
                         setTask(t);
                         setBoard(b);
                       }}
