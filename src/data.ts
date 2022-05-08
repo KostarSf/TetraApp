@@ -98,11 +98,11 @@ let users: UserDto[] = [
   },
   {
     id: 2,
-    fullName: 'Михаил Кортунов'
+    fullName: 'Андрей Захарченко'
   }
 ]
 
-let lastCommentId = 1
+let lastCommentId = 3
 
 let comments: CommentDto[] = [
   {
@@ -142,8 +142,8 @@ export const getAllComments = () => {
   return comments.map(c => ({...c, user: getUserById(c.userId)}));
 }
 
-export const getCommentsByTask = (task: TaskDto) => {
-  return getAllComments().filter(c => c.taskId === task.id);
+export const getCommentsByTaskId = (taskId: number): CommentDto[] => {
+  return getAllComments().filter(c => c.taskId === taskId);
 }
 
 export  const getCommentById = (id: number): CommentDto | undefined => {
@@ -161,6 +161,8 @@ export const createComment = (text: string, taskId: number, userId: number, pare
   });
   return getCommentById(lastCommentId);
 }
+
+export const getCurrentUser = () => getUserById(1) as UserDto;
 
 export const moveTask = (task: TaskDto, board: BoardDto) => {
   tasks = tasks.map(t => {
