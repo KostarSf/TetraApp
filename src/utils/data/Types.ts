@@ -19,6 +19,22 @@ export type TaskDto = {
   creationDate: string
 }
 
+export enum WorkTaskPriority {
+  low = 'Низкий',
+  normal = 'Обычный',
+  high = 'Высокий'
+}
+
+export type WorkTaskDto = {
+  taskId: number,
+  priority: WorkTaskPriority,
+  managerId: number,
+  memberIds: number[],
+  status: string,
+  startDate: string,
+  finishDate: string,
+}
+
 export type UserDto = {
   id: number,
   fullName: string,

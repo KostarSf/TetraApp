@@ -1,4 +1,4 @@
-import { BoardDto, CommentDto, TaskDto, UserDto } from "./Types"
+import { BoardDto, CommentDto, TaskDto, UserDto, WorkTaskDto, WorkTaskPriority } from "./Types"
 
 export default class TempStore {
   private static boards: BoardDto[] = [
@@ -111,5 +111,32 @@ export default class TempStore {
     }
     this.comments.push(newComment);
     return newComment;
+  }
+
+  private static workTasks: WorkTaskDto[] = [
+    {
+      taskId: 1,
+      priority: WorkTaskPriority.normal,
+      managerId: 1,
+      memberIds: [2],
+      status: 'start',
+      startDate: '2022-05-09T13:27:33.285Z',
+      finishDate: '2022-15-09T13:27:33.285Z'
+    }
+  ]
+
+  static GetWorkTasks = () => this.workTasks;
+
+  static SetWorkTask = (workTask: WorkTaskDto) => {
+    const oldWorkTask = this.workTasks.find(t => t.taskId === workTask.taskId);
+
+    if (oldWorkTask) {
+      this.workTasks = this.workTasks.map(t => {
+        return t.taskId === workTask.taskId ?
+          {...workTask} : t
+      })
+    } else {
+      this.workTasks.push(workTask);
+    }
   }
 }

@@ -1,5 +1,5 @@
 import TempStore from "./TempStore";
-import { BoardDto, CommentDto, TaskDto, UserDto } from "./Types";
+import { BoardDto, CommentDto, TaskDto, UserDto, WorkTaskDto } from "./Types";
 
 export default class DataActions {
   static getTasksOfBoard = (boardId: number) => {
@@ -57,5 +57,17 @@ export default class DataActions {
       return { ...t, boardId: board.id };
     })
     TempStore.SetTasks(newTasks);
+  }
+
+  static getWorkTasks = () => {
+    return TempStore.GetWorkTasks();
+  }
+
+  static getWorkTaskById = (taskId: number) => {
+    return this.getWorkTasks().find(t => t.taskId === taskId);
+  }
+
+  static setWorkTask = (workTask: WorkTaskDto) => {
+    TempStore.SetWorkTask(workTask);
   }
 }
