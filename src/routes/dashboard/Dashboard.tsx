@@ -7,10 +7,7 @@ import Fakecrumb from "../../components/fakecrumb/Fakecrumb";
 import { BoardDto } from "../../utils/data/Types";
 import DataActions from "../../utils/data/DataActions";
 
-type Props = {
-}
-
-const Dashboard: React.FC<Props> = ({  }) => {
+const Dashboard: React.FC = () => {
   const [boards, setBoards] = useState<BoardDto[]>([]);
 
   useEffect(() => setBoards(DataActions.getAllBoards()), [])

@@ -10,11 +10,6 @@ import DataActions from '../../utils/data/DataActions';
 import { BoardDto, TaskDto } from '../../utils/data/Types';
 
 const TaskScreen: React.FC = () => {
-  const [inWork, setInWork] = useState(localStorage.getItem('inwork') === 'true')
-  const [taskData, setTaskData] = useState<ModalDto>();
-
-  const [membersField, setMembersField] = useState('');
-
   const [task, setTask] = useState(DataActions.getTaskById(Number(useParams().taskId)) as TaskDto);
   const [board, setBoard] = useState(DataActions.getBoardByTask(task) as BoardDto);
 
@@ -24,14 +19,14 @@ const TaskScreen: React.FC = () => {
 
   }, []);
 
+  const moveTaskHandle = (task: TaskDto, board: BoardDto) => {
+    DataActions.moveTask(task, board);
+    setTask(task);
+    setBoard(board);
+  }
+
   return (
     <div className="container-fluid h-100 " >
-      <Modal onApprove={(dto) => {
-        localStorage.setItem('inwork', 'true');
-        localStorage.setItem('taskdata', JSON.stringify(dto));
-        setTaskData(dto);
-        setInWork(true);
-      }} />
       <div>
         <Fakecrumb
           fakeItems={['Проекты', 'Городское управление']}
@@ -57,11 +52,7 @@ const TaskScreen: React.FC = () => {
                 {DataActions.getAllBoardsWithSort().filter(b => !b.newBoard).map(b => {
                   return (
                     <ChangeBoardButton
-                      onClick={(t, b) => {
-                        DataActions.moveTask(t, b);
-                        setTask(t);
-                        setBoard(b);
-                      }}
+                      onClick={moveTaskHandle}
                       key={b.id}
                       current={board.id === b.id}
                       board={b}
@@ -98,27 +89,6 @@ const TaskScreen: React.FC = () => {
                       </li>)`}
                     </ul>
                     <button className='btn btn-link'>изменить</button>
-                    <div className="modal fade" id="exampleModal2" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Изменить участников</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div className="modal-body">
-                            <input type="text" className="form-control" placeholder="Участники, через запятую" value={membersField} onChange={e => setMembersField(e.target.value)} />
-                          </div>
-                          <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
-                              // const dto: ModalDto = { ...taskData, memb: membersField.split(',').map(i => i.trim()) };
-                              // setTaskData(dto);
-                              // localStorage.setItem('taskdata', JSON.stringify(dto));
-                            }}>Сохранить</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -130,68 +100,5 @@ const TaskScreen: React.FC = () => {
     </div>
   );
 };
-
-type ModalDto = {
-  rate: string;
-  resp: string;
-  memb: string[];
-}
-
-type ModalProps = {
-  onApprove: (dto: ModalDto) => void;
-}
-
-const Modal: React.FC<ModalProps> = ({ onApprove }) => {
-  const [rate, setRate] = useState('none');
-  const [resp, setResp] = useState('Максим Песков');
-  const [memb, setMemb] = useState('');
-
-  return (
-    <div className="modal fade" id="exampleModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLabel">Детали задачи</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div className="modal-body">
-            <form className="form">
-              <div className="form-floating mb-3">
-                <select value={rate} onChange={e => setRate(e.target.value)} id='floatingInput' className="form-select" aria-label="Default select example">
-                  <option value="none" disabled className='text-secondary'>Выберите из списка</option>
-                  <option value="Низкий">Низкий</option>
-                  <option value="Обычный" className='text-info'>Обычный</option>
-                  <option value="Высокий" className='text-danger'>Высокий</option>
-                </select>
-                <label htmlFor="floatingInput">Приоритет</label>
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="form-label">Ответственный</label>
-                <input value={resp} onChange={e => setResp(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Ответственный" />
-              </div>
-
-              <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="form-label">Участники</label>
-                <input value={memb} onChange={e => setMemb(e.target.value)} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Участники, через запятую" />
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-            <button type="button" className="btn btn-primary" onClick={() => {
-              onApprove({
-                rate, resp, memb: memb.split(',').map(i => i.trim())
-              });
-              setRate('none');
-              setResp('Максим Песков');
-              setMemb('');
-            }} data-bs-dismiss="modal">Подтвердить</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default TaskScreen;

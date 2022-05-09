@@ -11,7 +11,6 @@ type CommentProps = {
 const Comment: React.FC<PropsWithChildren<CommentProps>> = ({ children, onReply, data: { id, taskId, userId, text, timestamp, parentCommentId, user } }) => {
   const [replyVisible, setReplyVisible] = useState(false);
   const [replyMessage, setReplyMessage] = useState(`${user?.fullName.split(' ')[0]}, `);
-  const textInput = React.createRef<HTMLTextAreaElement>();
 
   const commentDate = new Date(timestamp).toISOString();
 
@@ -51,7 +50,7 @@ const Comment: React.FC<PropsWithChildren<CommentProps>> = ({ children, onReply,
       {replyVisible && (
         <div className='d-grid d-md-flex gap-2 my-2'>
           <div className="col-md-8 p-0">
-            <textarea ref={textInput} id="floatingComm" className="form-control" value={replyMessage} onChange={e => setReplyMessage(e.target.value)} rows={1} placeholder='Введите текст ответа'></textarea>
+            <textarea id="floatingComm" className="form-control" value={replyMessage} onChange={e => setReplyMessage(e.target.value)} rows={1} placeholder='Введите текст ответа'></textarea>
           </div>
           <div className="col p-0">
             <button className='btn btn-primary w-100' onClick={onReplyHandle}>Отправить</button>
