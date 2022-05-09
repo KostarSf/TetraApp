@@ -78,28 +78,26 @@ const TaskScreen: React.FC = () => {
             <hr />
             <CommentsList taskId={task.id} />
           </div>
-          {taskData &&
+          {board.workBoard &&
             <div className='col'>
               <div className="p-4 m-3 mt-4 border rounded bg-white">
                 <div className='row mb-3'>
                   <div className="col text-secondary">Приоритет: </div>
-                  <div className="col">{taskData.rate}</div>
+                  <div className="col">taskData.rate</div>
                 </div>
                 <div className='row mb-3' >
                   <div className="col text-secondary">Ответств.:</div>
-                  <div className="col">{taskData.resp}</div>
+                  <div className="col">taskData.resp</div>
                 </div>
                 <div className='row flex-wrap' >
                   <div className="col text-secondary">Участники:</div>
                   <div className="col">
                     <ul className='list-group list-group-flush'>
-                      {taskData.memb.map(i => <li className='list-group-item ps-0'>
+                      {`taskData.memb.map(i => <li className='list-group-item ps-0'>
                         {i}
-                      </li>)}
+                      </li>)`}
                     </ul>
-                    <a href='#' className='link ps-0' data-bs-toggle="modal" data-bs-target="#exampleModal2" onClick={() => {
-                      setMembersField(taskData.memb.join(', '));
-                    }}>изменить</a>
+                    <button className='btn btn-link'>изменить</button>
                     <div className="modal fade" id="exampleModal2" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div className="modal-dialog">
                         <div className="modal-content">
@@ -113,9 +111,9 @@ const TaskScreen: React.FC = () => {
                           <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
                             <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
-                              const dto: ModalDto = { ...taskData, memb: membersField.split(',').map(i => i.trim()) };
-                              setTaskData(dto);
-                              localStorage.setItem('taskdata', JSON.stringify(dto));
+                              // const dto: ModalDto = { ...taskData, memb: membersField.split(',').map(i => i.trim()) };
+                              // setTaskData(dto);
+                              // localStorage.setItem('taskdata', JSON.stringify(dto));
                             }}>Сохранить</button>
                           </div>
                         </div>
