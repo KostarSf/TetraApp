@@ -3,7 +3,7 @@ import './sidebar.css';
 
 export default function Sidebar() {
   return (
-    <aside className='d-flex flex-column flex-shrink-0 bg-primary' style={{ width: '4.5rem' }}>
+    <aside className='d-none d-sm-flex flex-column flex-shrink-0 bg-primary' style={{ width: '4.5rem' }}>
       <a href="/" className="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Icon-only">
         <img src={logo} alt="" />
       </a>
