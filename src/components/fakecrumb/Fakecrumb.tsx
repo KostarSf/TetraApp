@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useUniqueId from '../../utils/UniqueID';
 
 type CrumbItem = {
   title: string;
@@ -32,7 +33,7 @@ const Fakecrumb: React.FC<FakecrumbProps> = ({fakeItems, items, currentItem}) =>
 
 const CreateFakeCrumbItems = (fakeItems: string | string[] | undefined) => {
   const CreateFakeCrumb = (title: string) => {
-    return <li className="breadcrumb-item text-secondary brdlink">{title}</li>
+    return <li className="breadcrumb-item text-secondary brdlink" key={useUniqueId('fc-fi-')}>{title}</li>
   }
 
   let fakeCrumbs: React.ReactNode[] = [];
@@ -48,7 +49,7 @@ const CreateFakeCrumbItems = (fakeItems: string | string[] | undefined) => {
 const CreateCrumbItems = (items: CrumbItem | CrumbItem[] | undefined) => {
   const CreateCrumb = (item: CrumbItem) => {
     return (
-      <li className="breadcrumb-item text-secondary brdlink">
+      <li className="breadcrumb-item text-secondary brdlink" key={useUniqueId('fc-i-')}>
         <Link to={item.link} style={{
           color: 'black'
         }}>
@@ -70,7 +71,7 @@ const CreateCrumbItems = (items: CrumbItem | CrumbItem[] | undefined) => {
 
 const CreateCurrentCrumb = (currentItem: string) => {
   return (
-    <li className="breadcrumb-item active text-primary" aria-current="page">
+    <li className="breadcrumb-item active text-primary" aria-current="page" key={useUniqueId('fc-ci-')}>
       {currentItem}
     </li>
   )
