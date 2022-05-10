@@ -8,10 +8,13 @@ import ChangeBoardButton from '../../components/changeboardbutton/ChangeBoardBut
 import Fakecrumb from '../../components/fakecrumb/Fakecrumb';
 import DataActions from '../../utils/data/DataActions';
 import { BoardDto, TaskDto } from '../../utils/data/Types';
+import WorkTaskModal, { WorkTaskModalData } from '../../components/modals/WorkTaskModal';
 
 const TaskScreen: React.FC = () => {
   const [task, setTask] = useState(DataActions.getTaskById(Number(useParams().taskId)) as TaskDto);
   const [board, setBoard] = useState(DataActions.getBoardByTask(task) as BoardDto);
+  const [showWorkDialog, setShowWorkDialog] = useState(false);
+  const [workDialogData, setWorkDialogData] = useState<WorkTaskModalData>();
 
   const isNew = RelativeTime.inMinutes(task.creationDate) < 60 * 24;
 
@@ -19,14 +22,31 @@ const TaskScreen: React.FC = () => {
 
   }, []);
 
-  const moveTaskHandle = (task: TaskDto, board: BoardDto) => {
+  const moveTaskAction = (task: TaskDto, board: BoardDto) => {
     DataActions.moveTask(task, board);
     setTask(task);
     setBoard(board);
   }
 
+  const moveTaskHandle = (task: TaskDto, board: BoardDto) => {
+    if (!board.workBoard) {
+      moveTaskAction(task, board);
+    } else {
+      setWorkDialogData({task, board});
+      setShowWorkDialog(true);
+    }
+  }
+
   return (
-    <div className="container-fluid h-100 " >
+    <div className="container-fluid h-100 ">
+      <WorkTaskModal
+        show={showWorkDialog}
+        data={workDialogData}
+        onClose={() => setShowWorkDialog(false)}
+        onSave={(workTask) => {
+          console.log('yes');
+        }}
+      />
       <div>
         <Fakecrumb
           fakeItems={['Проекты', 'Городское управление']}
