@@ -20,11 +20,11 @@ const Fakecrumb: React.FC<FakecrumbProps> = ({fakeItems, items, currentItem}) =>
   return (
     <div className="d-flex flex-wrap">
       <nav className="py-2 px-3 rounded-2 mt-3 me-0 me-sm-3" aria-label="breadcrumb" style={{ background: '#E9ECEF' }}>
-        <ol className="breadcrumb m-0">
+        <ul className="breadcrumb m-0">
           {fakeCrumbItems}
           {crumbItems}
           {currentCrumb}
-        </ol>
+        </ul>
       </nav>
     </div>
   );
