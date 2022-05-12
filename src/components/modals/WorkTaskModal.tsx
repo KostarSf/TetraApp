@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { BoardDto, TaskDto, WorkTaskDto, WorkTaskPriority } from '../../utils/data/Types';
+import React, { useEffect, useState } from 'react';
+import DataActions from '../../utils/data/DataActions';
+import { BoardDto, TaskDto, UserDto, WorkTaskDto, WorkTaskPriority } from '../../utils/data/Types';
 import useUniqueId from '../../utils/UniqueID';
 import Modal from './Modal';
 
@@ -12,7 +13,7 @@ export type WorkTaskModalProps = {
   show: boolean;
   data: WorkTaskModalData | undefined;
   onClose: VoidFunction;
-  onSave: (workTask: WorkTaskDto | any) => void;
+  onSave: (workTask: WorkTaskDto, task: TaskDto, board: BoardDto) => void;
 }
 
 const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
@@ -23,7 +24,7 @@ const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
 }) => {
   const [id] = useState(useUniqueId('WorkTaskModal-'))
 
-  const [priority, setPriority] = useState<WorkTaskPriority>(WorkTaskPriority.normal);
+  const [priority, setPriority] = useState <WorkTaskPriority>(WorkTaskPriority.normal);
   const [status, setStatus] = useState('Подготовка к выполнению');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [finishDate, setFinishDate] = useState<Date>(() => {
@@ -32,12 +33,31 @@ const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
     return nextDay;
   })
 
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const [managerId, setManagerId] = useState<number>(DataActions.getCurrentUser().id);
+  const [memberIds, setMemberIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    const users = DataActions.getUsers();
+    setUsers(users);
+  })
+
   const setId = (name: string) => {
     return `${name}_${id}`
   }
 
   const onSaveHandle = () => {
-    onSave({})
+    if (!data) return;
+
+    onSave({
+      taskId: data.task.id,
+      priority,
+      managerId,
+      memberIds,
+      status,
+      startDate: startDate.toISOString(),
+      finishDate: finishDate.toISOString()
+    }, data.task, data.board);
   }
 
   return (
@@ -60,11 +80,12 @@ const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
           className="form-select"
           id={setId('priority')}
           aria-label="Приоритет"
-          defaultValue='2'
+          value={getEnumEntryByValue(priority, WorkTaskPriority)}
+          onChange={e => setPriority(setEnumByEntry(e.target.value, WorkTaskPriority))}
         >
-          <option value="1">Низкий</option>
-          <option value="2">Обычный</option>
-          <option value="3">Высокий</option>
+          {getEnumEntries(WorkTaskPriority).map(i => (
+            <option value={i} key={i}>{WorkTaskPriority[i]}</option>
+          ))}
         </select>
       </div>
       <div className="mb-3">
@@ -73,15 +94,61 @@ const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
           className="form-select"
           id={setId('manager')}
           aria-label="Менеджер"
-          defaultValue='1'
+          value={managerId}
+          onChange={e => setManagerId(+e.target.value)}
         >
-          <option value="1">Максим Песков</option>
-          <option value="2">Кто-то Ещё</option>
+          {users.filter(u => !memberIds.find(m => m === u.id)).map(u => (
+            <option value={u.id} key={u.id}>{u.fullName}</option>
+          ))}
         </select>
       </div>
       <div className="mb-3">
         <label htmlFor={setId('members')} className="form-label">Исполнители</label>
-        <input type="text" className="form-control" id={setId('members')} placeholder="Список исполнителей" />
+        <select
+          className="form-select"
+          id={setId('members')}
+          aria-label="Исполнители"
+          value='choose'
+          onChange={e => {
+            const value: string = e.target.value;
+            if (value !== 'choose') {
+              setMemberIds((members) => {
+                return [...members, +value]
+              })
+            }
+          }}
+        >
+          <option value="choose" key='choose'>Выберите из списка</option>
+          {users.filter(u => !(memberIds.find(m => m === u.id) || managerId === u.id)).map(u => (
+            <option value={u.id} key={u.id}>{u.fullName}</option>
+          ))}
+        </select>
+        <div className='bg-light rounded mt-2'>
+          {(memberIds.length === 0) && (
+            <button className='btn btn-link' disabled
+              style={{textDecoration: 'none'}}
+            >
+              Исполнители не выбраны
+            </button>
+          )}
+          {memberIds.map(m => {
+            const user = users.find(u => u.id === m);
+
+            if (!user) return <></>;
+
+            return (
+              <button
+                className='btn btn-link'
+                key={user.id}
+                onClick={e => setMemberIds(members => {
+                  return members.filter(m => m !== user.id)
+                })}
+              >
+                {user.fullName}
+              </button>
+            )
+          })}
+        </div>
       </div>
       <div className="mb-3">
         <label htmlFor={setId('status')} className="form-label">Статус</label>
@@ -130,6 +197,20 @@ const getUtcTimeFromLocal = (date: string): Date => {
   const now = new Date(date);
   console.log(now);
   return now;
+}
+
+const getEnumEntryByValue = <EnumType,>(value: EnumType[keyof EnumType], enumType: EnumType ) => {
+  return getEnumEntries(enumType).filter(e => {
+    return enumType[e] === value;
+  })[0]
+}
+
+const setEnumByEntry = <EnumType,>(entry: string, enumType: EnumType) => {
+  return enumType[entry as keyof typeof enumType];
+}
+
+const getEnumEntries = <EnumType,>(enumType: EnumType) => {
+  return (Object.keys(enumType) as Array<keyof typeof enumType>)
 }
 
 export default WorkTaskModal;
