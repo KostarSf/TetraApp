@@ -22,6 +22,10 @@ export default class DataActions {
     return this.getAllBoards().find(b => b.id === task.boardId);
   }
 
+  static getUsers = () => {
+    return TempStore.GetUsers();
+  }
+
   static getUserById = (userId: number) => {
     return TempStore.GetUsers().find(u => u.id === userId);
   }
