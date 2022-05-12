@@ -77,6 +77,14 @@ export default class TempStore {
     {
       id: 2,
       fullName: 'Андрей Захарченко'
+    },
+    {
+      id: 3,
+      fullName: 'Даниил Куприев'
+    },
+    {
+      id: 4,
+      fullName: 'Михаил Кортунов'
     }
   ]
 
