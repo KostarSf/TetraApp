@@ -8,6 +8,7 @@ export type ModalProps = {
   show: boolean;
   closeOnSave?: boolean;
   onClose?: VoidFunction;
+  onOpen?: VoidFunction;
   onSave?: () => void | boolean;
   header?: {
     show?: boolean,
@@ -26,6 +27,7 @@ export type ModalProps = {
 const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   show,
   closeOnSave = false,
+  onOpen = () => { },
   onClose = () => { },
   onSave = () => true,
   header = {
@@ -73,6 +75,7 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
   useMemo(() => {
     if (show) {
       modal?.show();
+      onOpen();
     } else {
       modal?.hide();
     }
