@@ -22,7 +22,7 @@ export default class DataActions {
     return this.getAllBoards().find(b => b.id === task.boardId);
   }
 
-  static getUsers = () => {
+  static getAllUsers = () => {
     return TempStore.GetUsers();
   }
 
