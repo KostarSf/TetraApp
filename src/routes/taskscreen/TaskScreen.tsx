@@ -49,6 +49,7 @@ const TaskScreen: React.FC = () => {
         onSave={(workTask, task, board) => {
           DataActions.setWorkTask(workTask);
           moveTaskAction(task, board);
+          setWorkTaskData(DataActions.getWorkTaskById(task.id));
         }}
       />
       <div>
