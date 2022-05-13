@@ -100,6 +100,10 @@ const TaskScreen: React.FC = () => {
                   <div className="col text-secondary">Приоритет: </div>
                   <div className="col">{workTaskData?.priority}</div>
                 </div>
+                <div className='row mb-3'>
+                  <div className="col text-secondary">Статус: </div>
+                  <div className="col">{workTaskData?.status}</div>
+                </div>
                 <div className='row mb-3' >
                   <div className="col text-secondary">Ответств.:</div>
                   <div className="col">
@@ -110,7 +114,10 @@ const TaskScreen: React.FC = () => {
                   <div className="col text-secondary">Участники:</div>
                   <div className="col">
                     <ul className='list-group list-group-flush'>
-                      {workTaskData && DataActions.getUsers().filter(u => workTaskData.memberIds.find(m => m === u.id)).map(u => (
+                      {(workTaskData && workTaskData.memberIds.length === 0) && (
+                        <span className='text-muted'>Не назначены</span>
+                      )}
+                      {workTaskData && DataActions.getAllUsers().filter(u => workTaskData.memberIds.find(m => m === u.id)).map(u => (
                         <li key={u.id}>{u.fullName}</li>
                       ))}
                     </ul>
