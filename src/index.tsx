@@ -35,3 +35,5 @@ root.render(
     </Routes>
   </BrowserRouter>
 );
+
+console.log("Made by kostarsf@gmail.com");

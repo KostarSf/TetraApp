@@ -54,17 +54,14 @@ const WorkTaskModal: React.FC<WorkTaskModalProps> = ({
       onClose={onCloseHandle}
       onSave={onSaveHandle}
       header={{
-        title: 'Провести опрос'
+        title: "Провести собрание",
       }}
       footer={{
-        closeButtonText: 'Отмена',
-        saveButtonText: 'Обновить задачу'
+        closeButtonText: "Отмена",
+        saveButtonText: "Обновить задачу",
       }}
     >
-      <WorkTaskForm
-        value={workTask}
-        onChange={wt => setWorkTask(wt)}
-      />
+      <WorkTaskForm value={workTask} onChange={(wt) => setWorkTask(wt)} />
     </Modal>
   );
 };
